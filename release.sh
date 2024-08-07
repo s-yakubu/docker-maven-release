@@ -5,6 +5,19 @@ echo "Setup /github/workspace as a safe directory"
 # This script will do a release of the artifact according to http://maven.apache.org/maven-release/maven-release-plugin/
 git config --global --add safe.directory /github/workspace
 
+# Install Git LFS if not already installed
+if ! git lfs version &> /dev/null; then
+    echo "Git LFS is not installed. Installing now..."
+    curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+    apk --no-cache add git-lfs
+fi
+
+# Initialize Git LFS in the repository
+git lfs install
+
+echo "Fetching files with Git LFS"
+git lfs pull
+
 # avoid the release loop by checking if the latest commit is a release commit
 readonly local last_release_commit_hash=$(git log --author="$GIT_RELEASE_BOT_NAME" --pretty=format:"%H" -1)
 echo "Last $GIT_RELEASE_BOT_NAME commit: ${last_release_commit_hash}"

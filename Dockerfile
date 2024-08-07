@@ -10,6 +10,10 @@ RUN apk add bash gettext
 # Vaadin needs node
 RUN apk add --update nodejs npm
 
+# Install Git LFS
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apk --no-cache add git-lfs
+
 COPY ./add-ssh-key.sh /usr/local/bin
 COPY ./setup-maven-servers.sh /usr/local/bin
 COPY ./release.sh /usr/local/bin
@@ -27,3 +31,9 @@ ARG SETTINGS_FILE="/usr/share/java/maven-3/conf/settings.xml"
 ENV SETTINGS_FILE=$SETTINGS_FILE
 
 RUN mkdir /root/.m2
+
+# Initialize Git LFS
+RUN git lfs install
+
+# Set default command
+CMD ["/bin/bash"]
