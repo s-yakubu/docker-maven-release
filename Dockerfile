@@ -4,10 +4,10 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV TZ=Etc/UTC
-ARG ZULU_KEY_SHA256=6c6393d4755818a15cf055a5216cffa599f038cd508433faed2226925956509a
-RUN wget --quiet https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc44c.rsa.pub -P /etc/apk/keys/ && \
-    echo "${ZULU_KEY_SHA256}  /etc/apk/keys/alpine-signing@azul.com-5d5dc44c.rsa.pub" | sha256sum -c - && \
-    apk --repository https://repos.azul.com/zulu/alpine --no-cache add zulu8-jdk~=8.0.422 tzdata
+#ARG ZULU_KEY_SHA256=6c6393d4755818a15cf055a5216cffa599f038cd508433faed2226925956509a
+#RUN wget --quiet https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc44c.rsa.pub -P /etc/apk/keys/ && \
+#    echo "${ZULU_KEY_SHA256}  /etc/apk/keys/alpine-signing@azul.com-5d5dc44c.rsa.pub" | sha256sum -c - && \
+#    apk --repository https://repos.azul.com/zulu/alpine --no-cache add zulu8-jdk~=8.0.422 tzdata
 RUN apk --no-cache add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN apk add bash gettext
 
@@ -26,8 +26,23 @@ RUN apk --update --no-cache add \
     libxml2-utils \
     && apk add --no-cache bash gettext
 
+RUN apk --update --no-cache add \
+    bash \
+    wget \
+    tar \
+    libstdc++ \
+    libgcc
+
+
+# Download and extract Zulu JDK
+RUN wget -qO- https://cdn.azul.com/zulu/bin/zulu8.80.0.17-ca-fx-jdk8.0.422-linux_x64.tar.gz | tar -xzC /usr/lib/jvm
+
+RUN ln -s /usr/lib/jvm/zulu8.80.0.17-ca-fx-jdk8.0.422-linux_x64 /usr/lib/jvm/zulu8-jdk-fx
+
+
 # Clean up
 RUN rm -rf /var/cache/apk/*
+
 # Vaadin needs node
 RUN apk add --update nodejs npm
 
