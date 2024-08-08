@@ -1,0 +1,5 @@
+<mirror>
+    <id>${MAVEN_MIRROR_ID}</id>
+    <url>${MAVEN_MIRROR_URL}</url>
+    <mirrorOf>${MAVEN_MIRROR_MIRROROF}</mirrorOf>
+</mirror>

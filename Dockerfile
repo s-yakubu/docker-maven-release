@@ -1,21 +1,72 @@
-FROM alpine:3
+FROM debian:bullseye-slim
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 ENV TZ=Etc/UTC
-ARG ZULU_KEY_SHA256=6c6393d4755818a15cf055a5216cffa599f038cd508433faed2226925956509a
-RUN wget --quiet https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc44c.rsa.pub -P /etc/apk/keys/ && \
-    echo "${ZULU_KEY_SHA256}  /etc/apk/keys/alpine-signing@azul.com-5d5dc44c.rsa.pub" | sha256sum -c - && \
-    apk --repository https://repos.azul.com/zulu/alpine --no-cache add zulu8-jdk~=8.0.422 tzdata
-RUN apk --no-cache add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
-RUN apk add bash gettext
+
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    ca-certificates \
+    apt-transport-https \
+    bash \
+    gettext \
+    maven \
+    git \
+    openssh-client \
+    vim \
+    jq \
+    nodejs \
+    npm \
+    libxml2-utils \
+    curl \
+    tar \
+    libstdc++6 \
+    libgcc1 \
+    && rm -rf /var/lib/apt/lists/*
+
+ARG ZULU_VER=8.62.0.19
+ARG ZULU_JAVA_VER=8.0.332
+
+
+RUN apt-get -qq update && \
+    DEBIAN_FRONTEND=noninteractive apt-get -qq -y --no-install-recommends install locales curl tzdata ca-certificates && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    curl -sLO https://cdn.azul.com/zulu/bin/zulu${ZULU_VER}-ca-fx-jdk${ZULU_JAVA_VER}-linux_amd64.deb && \
+    chmod a+rx zulu${ZULU_VER}-ca-fx-jdk${ZULU_JAVA_VER}-linux_amd64.deb && \
+    apt-get install -y --no-install-recommends ./zulu${ZULU_VER}-ca-fx-jdk${ZULU_JAVA_VER}-linux_amd64.deb && \
+    apt-get -qq -y purge curl && \
+    apt -y autoremove && \
+    rm -rf /var/lib/apt/lists/* zulu${ZULU_VER}-ca-fx-jdk${ZULU_JAVA_VER}-linux_amd64.deb
+
+ENV JAVA_HOME=/usr/lib/jvm/zulu-fx-8-amd64
+
+#RUN apk add bash gettext
+
+#RUN apk --update --no-cache add \
+#    bash \
+#    maven \
+#    git \
+#    openssh \
+#    gnupg \
+#    vim \
+#    jq \
+#    nodejs \
+#    npm \
+#    gettext \
+#    libxml2 \
+#    libxml2-utils \
+#    && apk add --no-cache bash gettext
+
+
 # Vaadin needs node
-RUN apk add --update nodejs npm
+#RUN apk add --update nodejs npm
 
 # Install Git LFS
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
-RUN apk --no-cache add git-lfs
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
+    && apt-get update && apt-get install -y git-lfs
 
 COPY ./add-ssh-key.sh /usr/local/bin
 COPY ./setup-maven-servers.sh /usr/local/bin
