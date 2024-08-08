@@ -10,6 +10,24 @@ RUN wget --quiet https://cdn.azul.com/public_keys/alpine-signing@azul.com-5d5dc4
     apk --repository https://repos.azul.com/zulu/alpine --no-cache add zulu8-jdk~=8.0.422 tzdata
 RUN apk --no-cache add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN apk add bash gettext
+
+RUN apk --update --no-cache add \
+    bash \
+    maven \
+    git \
+    openssh \
+    gnupg \
+    vim \
+    jq \
+    nodejs \
+    npm \
+    gettext \
+    libxml2 \
+    libxml2-utils \
+    && apk add --no-cache bash gettext
+
+# Clean up
+RUN rm -rf /var/cache/apk/*
 # Vaadin needs node
 RUN apk add --update nodejs npm
 
