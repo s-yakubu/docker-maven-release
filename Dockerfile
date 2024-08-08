@@ -1,6 +1,6 @@
 FROM alpine:3
 
-RUN apk --update --no-cache add bash maven git openssh gnupg libxml2-utils vim openjdk8 jq
+RUN apk --update --no-cache add bash maven git openssh gnupg libxml2-utils vim zulu8-jdk jq
 RUN apk --no-cache add openjdk11 --repository=http://dl-cdn.alpinelinux.org/alpine/edge/community
 RUN apk add bash gettext
 # Vaadin needs node
