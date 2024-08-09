@@ -1,6 +1,5 @@
-        <server>
-            <!-- This id must match the distributionManagement section in pom.xml -->
-            <id>${MAVEN_REPO_SERVER_ID}</id>
-            <username>${MAVEN_REPO_SERVER_USERNAME}</username>
-            <password>${MAVEN_REPO_SERVER_PASSWORD}</password>
-        </server>
+<server>
+    <id>${MAVEN_REPO_SERVER_ID}</id>
+    <username>${MAVEN_REPO_SERVER_USERNAME}</username>
+    <password>${MAVEN_REPO_SERVER_PASSWORD}</password>
+</server>
