@@ -94,6 +94,8 @@ ENV SETTINGS_FILE=$SETTINGS_FILE
 
 RUN mkdir /root/.m2
 
+RUN mkdir -p ~/.m2
+
 # Initialize Git LFS
 RUN git lfs install
 
