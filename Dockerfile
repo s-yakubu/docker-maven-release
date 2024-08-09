@@ -68,21 +68,29 @@ ENV JAVA_HOME=/usr/lib/jvm/zulu-fx-8-amd64
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
     && apt-get update && apt-get install -y git-lfs
 
+# Copy necessary scripts and templates
 COPY ./add-ssh-key.sh /usr/local/bin
 COPY ./setup-maven-servers.sh /usr/local/bin
 COPY ./release.sh /usr/local/bin
 COPY ./settings-template.xml /usr/share/java/maven-3/conf/
 COPY ./settings-server-template.xml /usr/share/java/maven-3/conf/
+COPY ./settings-mirror-template.xml /usr/share/java/maven-3/conf/
 COPY ./simplelogger.properties /usr/share/java/maven-3/conf/logging/simplelogger.properties
 
+# Define ARGs and ENV variables for settings files
 ARG SETTINGS_TEMPLATE_FILE="/usr/share/java/maven-3/conf/settings-template.xml"
 ENV SETTINGS_TEMPLATE_FILE=$SETTINGS_TEMPLATE_FILE
 
 ARG SETTINGS_SERVER_TEMPLATE_FILE="/usr/share/java/maven-3/conf/settings-server-template.xml"
 ENV SETTINGS_SERVER_TEMPLATE_FILE=$SETTINGS_SERVER_TEMPLATE_FILE
 
+# Adding the mirror template ARG and ENV
+ARG SETTINGS_MIRROR_TEMPLATE_FILE="/usr/share/java/maven-3/conf/settings-mirror-template.xml"
+ENV SETTINGS_MIRROR_TEMPLATE_FILE=$SETTINGS_MIRROR_TEMPLATE_FILE
+
 ARG SETTINGS_FILE="/usr/share/java/maven-3/conf/settings.xml"
 ENV SETTINGS_FILE=$SETTINGS_FILE
+
 
 RUN mkdir /root/.m2
 

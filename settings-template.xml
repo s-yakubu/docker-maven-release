@@ -9,4 +9,20 @@
     <servers>
         ${MAVEN_SERVERS_XML}
     </servers>
+    <profiles>
+        <!-- GPG settings -->
+        <profile>
+            <id>gpg</id>
+            <activation>
+                <activeByDefault>${env.GPG_ENABLED}</activeByDefault>
+            </activation>
+            <properties>
+                <gpg.executable>gpg</gpg.executable>
+                <!-- Load passphrase from env variable -->
+                <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+                <gpg.keyname>${env.GPG_KEY_ID}</gpg.keyname>
+
+            </properties>
+        </profile>
+    </profiles>
 </settings>
