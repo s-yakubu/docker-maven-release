@@ -106,6 +106,12 @@ fi
 # Setup the server credentials in the settings.xml
 setup-maven-servers.sh
 
+# Copy default Maven settings
+echo "Copy default Maven settings.xml"
+cp /usr/share/java/maven-3/conf/settings.xml ~/.m2/settings.xml
+
+cp /usr/share/java/maven-3/conf/settings.xml /root/settings.xml
+
 APP_VERSION=`xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml`
 #verify we are not on a release tag
 if [[ "$APP_VERSION" == *0 ]]; then 
