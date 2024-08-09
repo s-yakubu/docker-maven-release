@@ -112,6 +112,8 @@ echo "Copy default Maven settings.xml"
 
 cp /usr/share/java/maven-3/conf/settings.xml /root/.m2/settings.xml
 
+mvn help:effective-settings
+
 APP_VERSION=`xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml`
 #verify we are not on a release tag
 if [[ "$APP_VERSION" == *0 ]]; then 
