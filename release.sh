@@ -108,9 +108,9 @@ setup-maven-servers.sh
 
 # Copy default Maven settings
 echo "Copy default Maven settings.xml"
-cp /usr/share/java/maven-3/conf/settings.xml ~/.m2/settings.xml
+#cp /usr/share/java/maven-3/conf/settings.xml ~/.m2/settings.xml
 
-cp /usr/share/java/maven-3/conf/settings.xml /root/settings.xml
+cp /usr/share/java/maven-3/conf/settings.xml /root/.m2/settings.xml
 
 APP_VERSION=`xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml`
 #verify we are not on a release tag
