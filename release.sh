@@ -156,11 +156,12 @@ else
   echo "Not using access token authentication, as no access token (via env GITREPO_ACCESS_TOKEN) defined or because an SSH key is defined and setup (via env SSH_PRIVATE_KEY)"
 fi
 
+echo "Doing a maven release:clean.."
+mvn release:clean
 
 # Do the release
 echo "Do mvn release:prepare with options $MAVEN_OPTION and arguments $MAVEN_ARGS"
-mvn -DreleaseVersion=4.1.2 -DdevelopmentVersion=4.1.3-SNAPSHOT build-helper:parse-version release:prepare -B -Darguments="-DskipTests"
-
+mvn -DreleaseVersion=4.1.2 -DdevelopmentVersion=4.1.3-SNAPSHOT build-helper:parse-version release:prepare -B -Darguments="-DskipTests" -X
 #mvn $MAVEN_OPTION $MAVEN_REPO_LOCAL build-helper:parse-version release:prepare -B -Darguments="$MAVEN_ARGS"
 
 
