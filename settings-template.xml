@@ -21,8 +21,17 @@
                 <!-- Load passphrase from env variable -->
                 <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
                 <gpg.keyname>${env.GPG_KEY_ID}</gpg.keyname>
-
+            </properties>
+        </profile>
+        <profile>
+            <id>extended-timeouts</id>
+            <properties>
+                <http.connectionTimeout>60000</http.connectionTimeout> <!-- Timeout in milliseconds (60 seconds) -->
+                <http.socketTimeout>120000</http.socketTimeout> <!-- Timeout in milliseconds (120 seconds) -->
             </properties>
         </profile>
     </profiles>
+    <activeProfiles>
+        <activeProfile>extended-timeouts</activeProfile>
+    </activeProfiles>
 </settings>
