@@ -112,7 +112,7 @@ echo "Copy default Maven settings.xml"
 
 cp /usr/share/java/maven-3/conf/settings.xml /root/.m2/settings.xml
 
-mvn help:effective-settings
+#mvn help:effective-settings
 
 APP_VERSION=`xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml`
 #verify we are not on a release tag
@@ -161,7 +161,7 @@ mvn release:clean
 
 # Do the release
 echo "Do mvn release:prepare with options $MAVEN_OPTION and arguments $MAVEN_ARGS"
-mvn -DreleaseVersion=4.1.2 -DdevelopmentVersion=4.1.3-SNAPSHOT build-helper:parse-version release:prepare -B -Darguments="-DskipTests" -X
+mvn -DreleaseVersion=4.1.2 -DdevelopmentVersion=4.1.3-SNAPSHOT build-helper:parse-version release:prepare -B -Darguments="-DskipTests"
 #mvn $MAVEN_OPTION $MAVEN_REPO_LOCAL build-helper:parse-version release:prepare -B -Darguments="$MAVEN_ARGS"
 
 
